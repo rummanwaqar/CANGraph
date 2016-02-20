@@ -14,7 +14,7 @@ namespace can_msg {
   public:
     // constructor sets id and length
     MsgEncode(uint8_t type, uint8_t dev_id, uint8_t msg_id, uint8_t priority, uint8_t len) :
-    _id( (uint16_t) ( priority << 9 | msg_id << 6 | dev_id << 3 | type ) ) {
+    _id( (uint16_t) ( priority << 9 | msg_id << 5 | dev_id << 3 | type ) ) {
       // calculate real length of can message array
       switch(type) {
         case BOOL: 
@@ -26,7 +26,10 @@ namespace can_msg {
         case UINT16:
           _len = len * 2; break;
         case INT32:
+        case UINT32:
           _len = len * 4; break;
+        case INT64:
+          _len = len * 8; break;
       }
     }  
     // get id
@@ -34,7 +37,7 @@ namespace can_msg {
     // get length
     uint8_t len() { return _len; }
 
-    void buf( uint8_t buf[], int32_t n ) {
+    void buf( uint8_t buf[], int64_t n ) {
       memcpy(buf, &n, _len);
     }
   };  

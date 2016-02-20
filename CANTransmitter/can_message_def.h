@@ -4,8 +4,8 @@
 /*
  * Message ID format (11 bits)
  *  Bit [2-0] store the message data type
- *  Bit [5-3] device id
- *  Bit [8-6] message id
+ *  Bit [4-3] device id
+ *  Bit [8-5] message id
  *  Bit [10-9] priority level
  *    0 - mission critical
  *    1 - important
@@ -15,29 +15,30 @@
 
 namespace can_msg {
   /*
-   * message type
+   * message type (3bits)
    */
   typedef enum {
     BOOL = 0,
-    INT8 = 1,
-    UINT8 = 2,
-    INT16 = 3,
-    UINT16 = 4,
-    INT32 = 5
+    INT8 = 1,   // -128 to 127
+    UINT8 = 2,  // 0 to 256
+    INT16 = 3,  // -32768 to 32767
+    UINT16 = 4, // 0 to 65535
+    INT32 = 5,  // -2147483648 to 2147483647
+    UINT32 = 6, // 0 to 4294967295
+    INT64 = 7   // -2^63 to 2^63-1
   } format_t;
 
   /*
-   * device ids
+   * device ids (2bits)
    */
   typedef enum {
     FUEL_CELL = 0,
     MOTOR = 1,
-    DISP_LCD = 6,
-    AUX = 7
+    AUX = 3
   } device_t;
   
   /*
-   * priority
+   * priority (2bits)
    */
   typedef enum {
     CRITICAL = 0,
